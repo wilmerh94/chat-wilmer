@@ -10,10 +10,12 @@ import { Login } from './pages/Login/Login';
 import { Project } from './pages/Project/Project';
 import { SignUp } from './pages/SignUp/SignUp';
 import { Navbar } from './components/Navbar/Navbar';
+import { Sidebar } from './components/Sidebar/Sidebar';
 
 function App() {
  return (
   <div className='App'>
+   <Sidebar />
    <div className='container'>
     <Navbar />
     <Routes>
