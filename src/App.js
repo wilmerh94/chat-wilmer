@@ -17,10 +17,11 @@ import { ToastContainer } from 'react-toastify';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 
 function App() {
+ const { user } = useAuthContext();
  return (
   <div className='App'>
    <>
-    <Sidebar />
+    {user && <Sidebar />}
     <div className='container'>
      <Navbar />
      <Routes>
