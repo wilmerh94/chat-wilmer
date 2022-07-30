@@ -47,24 +47,23 @@ export const useSignup = () => {
       // Upload picture Profile
       const storage = getStorage()
 
-      const fileName = `${user.uid}/${formFile.name}`
-      console.log(fileName)
+      const fileName = `${user.uid}-${formFile.name}`
       const filesImageRef = ref(storage, 'images/' + fileName)
-      console.log(filesImageRef)
-      const uploadTask = uploadBytesResumable(filesImageRef, formFile)
-      console.log(uploadTask)
-      getDownloadURL(ref(storage, 'images/stars.jpg'))
+      // NOTE: make sure to put await in firebase function to be able to update or modify anything
+      const uploadTask = await uploadBytesResumable(filesImageRef, formFile)
+      const imgUrl = await getDownloadURL(ref(storage, 'images/' + fileName))
 
-      //  Add Display name to user
-      updateProfile(auth.currentUser, {
-        displayName
-        // photoURL: imgUrl
+      //  Add Display name and photoURL to user
+      await updateProfile(auth.currentUser, {
+        displayName,
+        photoURL: imgUrl
       })
       const formDataCopy = {
+        online: true,
         displayName,
         email,
-        password
-        // imgUrl
+        password,
+        imgUrl
       }
       delete formDataCopy.password
 
@@ -73,18 +72,16 @@ export const useSignup = () => {
       toast.success('User created successfully')
       // Dispatch login action
       dispatch({ type: 'LOGIN', payload: user })
-      if (!isCancelled) {
+      if (isCancelled) {
         setIsLoading(false)
         setError(null)
       }
       navigate('/')
     } catch (err) {
       console.log(err.message)
-      if (!isCancelled) {
-        toast.error(err)
-        setError(err.message)
-        setIsLoading(false)
-      }
+      toast.error(err)
+      setError(err.message)
+      setIsLoading(false)
     }
   }
   useEffect(() => {

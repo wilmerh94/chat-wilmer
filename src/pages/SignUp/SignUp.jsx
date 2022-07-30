@@ -33,6 +33,7 @@ export const SignUp = () => {
     e.preventDefault()
     setFormFile(null)
     let selected = e.target.files[0]
+
     if (!selected) {
       setFormFileError('Please Select a file')
       return
@@ -52,6 +53,7 @@ export const SignUp = () => {
   }
   const handleSubmit = e => {
     e.preventDefault()
+
     SignUp(email, password, displayName, formFile)
   }
   return (
@@ -92,14 +94,17 @@ export const SignUp = () => {
         <input type='file' required onChange={handleFileChange} />
         {formFileError && <div className='error'>{formFileError}</div>}
       </label>
-      <button className='btn' type='submit'>
-        Sign Up
-      </button>
-      {/* {isLoading && (
+      {!isLoading && (
+        <button className='btn' type='submit'>
+          Sign Up
+        </button>
+      )}
+
+      {isLoading && (
         <button className='btn' disabled>
           Loading...
         </button>
-      )} */}
+      )}
       {error && <div className='error'>{error}</div>}
     </form>
   )
