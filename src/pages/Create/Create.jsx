@@ -90,6 +90,7 @@ export const Create = () => {
 
     const project = {
       ...formData,
+      dueDate: Timestamp.fromDate(new Date(dueDate)),
       comments: [],
       createdBy
     };

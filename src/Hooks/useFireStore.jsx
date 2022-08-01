@@ -3,7 +3,9 @@ import {
   collection,
   deleteDoc,
   doc,
-  serverTimestamp
+  serverTimestamp,
+  Timestamp,
+  updateDoc
 } from 'firebase/firestore';
 import {
   getDownloadURL,
@@ -39,6 +41,13 @@ const firestoreReducer = (state, action) => {
         error: null
       };
     case 'ADDED_DOCUMENT':
+      return {
+        isLoading: false,
+        document: action.payload,
+        success: true,
+        error: null
+      };
+    case 'UPDATED_DOCUMENT':
       return {
         isLoading: false,
         document: action.payload,
@@ -165,7 +174,7 @@ export const useFireStore = collectionName => {
     try {
       const DocCopy = {
         ...doc,
-        DateCreated: serverTimestamp()
+        DateCreated: Timestamp.fromDate(new Date())
       };
 
       const addedDocument = await addDoc(ref1, DocCopy);
@@ -173,6 +182,32 @@ export const useFireStore = collectionName => {
         type: 'ADDED_DOCUMENT',
         payload: addedDocument
       });
+    } catch (err) {
+      dispatch({
+        type: 'ERROR',
+        payload: err.message
+      });
+    }
+  };
+
+  // Update Documents
+
+  const updatedDocument = async (id, updates) => {
+    dispatch({ type: 'IS_PENDING' });
+    try {
+      const DocCopy = {
+        ...updates,
+        DateCreated: Timestamp.fromDate(new Date())
+      };
+
+      const docRef = doc(ref1, id);
+      const updatedDoc = await updateDoc(docRef, DocCopy);
+
+      dispatch({
+        type: 'UPDATED_DOCUMENT',
+        payload: updatedDoc
+      });
+      return updatedDocument;
     } catch (err) {
       dispatch({
         type: 'ERROR',
@@ -189,6 +224,7 @@ export const useFireStore = collectionName => {
     addDocument,
     deleteDocument,
     createProject,
+    updatedDocument,
     response
   };
 };

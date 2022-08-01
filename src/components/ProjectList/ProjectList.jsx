@@ -10,7 +10,7 @@ export const ProjectList = ({ projects }) => {
       {projects.map(project => (
         <Link to={`/projects/${project.id}`} key={project.id}>
           <h4>{project.name}</h4>
-          <p>Due by {project.dueDate}</p>
+          <p>Due by {project.dueDate.toDate().toDateString()}</p>
           <div className="assigned-to">
             <ul>
               {project.assignedUsers.map(user => (
