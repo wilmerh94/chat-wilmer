@@ -1,11 +1,12 @@
-// Style
 import { Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import { useAuthContext } from '../../Hooks/useAuthContext';
 import { useFetching } from '../../Hooks/useCollection';
 import { useFireStore } from '../../Hooks/useFireStore';
+// Style
 import './Create.css';
 
 const formDataDefault = {
@@ -23,6 +24,7 @@ const categories = [
   { value: 'marketing', label: 'Marketing' }
 ];
 export const Create = () => {
+  const navigate = useNavigate();
   const { listings } = useFetching('users');
   const [users, setUsers] = useState([]);
   const { user } = useAuthContext();
@@ -97,6 +99,7 @@ export const Create = () => {
     if (response.success) {
       setFormData(formDataDefault);
       toast.success('Project added with success!');
+      navigate('/');
     }
     if (response.error) {
       toast.error(response.error);
