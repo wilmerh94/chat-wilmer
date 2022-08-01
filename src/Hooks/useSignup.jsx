@@ -50,6 +50,7 @@ export const useSignup = () => {
       const fileName = `${user.uid}-${formFile.name}`
       const filesImageRef = ref(storage, 'images/' + fileName)
       // NOTE: make sure to put await in firebase function to be able to update or modify anything
+      // eslint-disable-next-line no-unused-vars
       const uploadTask = await uploadBytesResumable(filesImageRef, formFile)
       const imgUrl = await getDownloadURL(ref(storage, 'images/' + fileName))
 

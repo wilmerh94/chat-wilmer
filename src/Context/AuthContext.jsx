@@ -1,4 +1,5 @@
 import { createContext, useEffect, useReducer } from 'react'
+// eslint-disable-next-line no-unused-vars
 import { db } from '../firebase/config'
 import { useAuthStatus } from '../Hooks/useAuthStatus'
 import { useFetching } from '../Hooks/useCollection'
@@ -39,6 +40,7 @@ export const AuthContextProvider = ({ children }) => {
     if (loggedIn && listings.isAdmin === true) {
       dispatch({ type: 'AUTH_IS_READY', payload: user })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedIn])
 
   return (

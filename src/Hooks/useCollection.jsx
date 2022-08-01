@@ -14,6 +14,7 @@ export const useFetching = collectionName => {
     setIsLoading(true)
     try {
       const q = query(collection(db, collectionName))
+      // eslint-disable-next-line no-unused-vars
       const unsubscribe = onSnapshot(q, querySnapshot => {
         if (querySnapshot.empty) {
           toast.error('No tacos to load')

@@ -12,7 +12,8 @@ import {
   uploadBytesResumable
 } from 'firebase/storage';
 import { useEffect, useReducer, useState } from 'react';
-import { db } from '../../firebase.config';
+import { db } from '../firebase/config';
+
 // Doing it outside the hook it will be there always and not every time the hook is use
 let initialState = {
   document: null,
@@ -57,10 +58,7 @@ const firestoreReducer = (state, action) => {
 };
 
 export const useFireStore = collectionName => {
-  const [response, dispatch] = useReducer(
-    firestoreReducer,
-    initialState
-  );
+  const [response, dispatch] = useReducer(firestoreReducer, initialState);
   const [isCancelled, setIsCancelled] = useState(false);
 
   // Collection ref
@@ -76,7 +74,6 @@ export const useFireStore = collectionName => {
   // Add Document
   const addDocument = async doc => {
     dispatch({ type: 'IS_PENDING' });
-
     const { uid, image } = doc;
     const storeImage = async image => {
       return new Promise((resolve, reject) => {
@@ -94,9 +91,7 @@ export const useFireStore = collectionName => {
         uploadTask.on(
           'state_changed',
           snapshot => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) *
-              100;
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
             switch (snapshot.state) {
               case 'paused':
@@ -115,18 +110,16 @@ export const useFireStore = collectionName => {
           () => {
             // Handle successful uploads on complete
             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              downloadURL => {
-                resolve(downloadURL);
-              }
-            );
+            getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+              resolve(downloadURL);
+            });
           }
         );
       });
     };
     const imgUrl = await Promise.all(
       [...image].map(image => storeImage(image))
-    ).catch(() => {
+    ).catch(err => {
       dispatch({
         type: 'ERROR',
         payload: err.message
@@ -166,13 +159,13 @@ export const useFireStore = collectionName => {
     }
   };
 
-  // Contact
-  const contactEmail = async doc => {
+  // Create Project
+  const createProject = async doc => {
     dispatch({ type: 'IS_PENDING' });
     try {
       const DocCopy = {
         ...doc,
-        timestamp: serverTimestamp()
+        DateCreated: serverTimestamp()
       };
 
       const addedDocument = await addDoc(ref1, DocCopy);
@@ -195,7 +188,7 @@ export const useFireStore = collectionName => {
   return {
     addDocument,
     deleteDocument,
-    contactEmail,
+    createProject,
     response
   };
 };
