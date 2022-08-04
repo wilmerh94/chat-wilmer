@@ -1,8 +1,7 @@
-import { serverTimestamp, Timestamp } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Avatar } from '../../components/Avatar/Avatar';
-import { timestamp } from '../../firebase/config';
 import { useAuthContext } from '../../Hooks/useAuthContext';
 import { useFireStore } from '../../Hooks/useFireStore';
 export const ProjectComments = ({ project }) => {

@@ -21,7 +21,7 @@ export const useDocument = collectionName => {
         if (doc.data()) {
           setDocument({ ...doc.data(), id: doc.id });
         } else {
-          toast.error('Listing does not exist');
+          toast.error('Project does not exist');
         }
       },
       err => {
