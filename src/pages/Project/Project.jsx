@@ -16,7 +16,7 @@ export const Project = () => {
       <ProjectSummary project={document} />
       <ProjectComments project={document} />
     </div>
-
-    // {document.TimeStamp.toDate().toDateString()}
   );
 };
+
+// {document.TimeStamp.toDate().toDateString()}

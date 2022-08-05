@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Avatar } from '../../components/Avatar/Avatar';
 import { useAuthContext } from '../../Hooks/useAuthContext';
 import { useFireStore } from '../../Hooks/useFireStore';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 export const ProjectComments = ({ project }) => {
   const params = useParams();
   const { updatedDocument, response } = useFireStore('projects');
@@ -42,8 +43,15 @@ export const ProjectComments = ({ project }) => {
                 <Avatar src={comment.photoURL} />
                 <p>{comment.displayName}</p>
               </div>
-              <div className="comment-date">
+              <div className="comment-content">
                 <p>{comment.content}</p>
+              </div>
+              <div className="comment-date">
+                <p>
+                  {formatDistanceToNow(comment.createdAt.toDate(), {
+                    addSuffix: true
+                  })}
+                </p>
               </div>
             </li>
           ))}

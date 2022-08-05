@@ -8,7 +8,7 @@ import './Dashboard.css';
 
 export const Dashboard = () => {
   const { user } = useAuthContext();
-  const { listings, error } = useFetching('projects');
+  const { listings, error, isLoading } = useFetching('projects');
   const [currentFilter, setCurrentFilter] = useState('all');
 
   const changeFilter = newFilter => {
@@ -43,6 +43,7 @@ export const Dashboard = () => {
   return (
     <div>
       <h2 className="page-title">Dashboard</h2>
+      {isLoading && <p>Loading....</p>}
       {error && <p className="error">{error}</p>}
       {listings && (
         <ProjectFilter currentFilter={currentFilter} changeFilter={changeFilter} />

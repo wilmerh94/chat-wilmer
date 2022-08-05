@@ -72,8 +72,12 @@
   color: var(--text-color);
   font-size: 0.9em;
   margin: 4px 0 10px;
+  text-align: right;
+
 }
 .comment-content {
   color: var(--text-color);
   font-size: 0.9em;
+  margin: 12px 0 2px;
+
 }

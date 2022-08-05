@@ -1,9 +1,13 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuthContext } from '../../Hooks/useAuthContext';
+import { useAuthStatus } from '../../Hooks/useAuthStatus';
 
 export const PrivateRoute = () => {
-  const { authIsReady, user } = useAuthContext();
-  if (user === null) return <div> Loading...</div>;
+  const { loggedIn, checkingStatus } = useAuthStatus();
 
-  return authIsReady ? <Outlet /> : <Navigate to="/sign-up" />;
+  // if (isLoading) return <Navigate to="/login" />;
+  if (checkingStatus) return <div>Loading...</div>;
+
+  // if (user == null)
+
+  return loggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
